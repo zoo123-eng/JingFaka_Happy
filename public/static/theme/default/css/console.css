@@ -1,7 +1,7 @@
 @charset 'UTF-8';
 
 html{overflow:auto;overflow-y:scroll !important}
-body{min-width:1024px;font-size:12px;line-height:24px;font-family:'微软雅黑','Microsoft YaHei','Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', 'Hiragino Sans GB',serif}
+body{min-width:auto;font-size:12px;line-height:24px;font-family:'微软雅黑','Microsoft YaHei','Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', 'Hiragino Sans GB',serif}
 a:hover{color:#039}a{color:#06C;cursor:pointer}input::-ms-clear{display:none}button{border-radius:0!important}label{font-size:100%;font-weight:500;margin-bottom:0}
 label.think-radio,label.think-checkbox{line-height:18px;margin-right:10px;margin-top:8px}
 .pointer{cursor:pointer!important}.help-block{margin-bottom:0}.block{display:block!important}.inline-block{display:inline-block!important}
@@ -87,7 +87,7 @@ table td .text-explode{color:#ccc!important;font-weight:normal!important;margin:
 .framework-container{width:auto;position:absolute;top:0px;left:0px;bottom:0px;right:0px;background:#FFF}
 
 /** 顶部菜单 */
-.console-topbar{position:relative;z-index:100;clear:both;height:50px;background:#0063CC;font-size:12px;min-width:990px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+.console-topbar{position:relative;z-index:100;clear:both;height:50px;background:#0063CC;font-size:12px;min-width:auto;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 .console-topbar a{text-decoration:none}
 .console-topbar a:focus{outline:none}
 .console-topbar .icon-arrow-down{display:inline-block;width:18px;text-align:center;vertical-align:middle}
@@ -149,7 +149,7 @@ border-radius: 5px;}
 .framework-sidebar .sidebar-nav .manage-nav a{display:block;height:100%}
 .framework-sidebar .sidebar-nav .manage-nav .nav-icon{height:100%;line-height:30px;font-size:16px}
 .framework-sidebar .sidebar-nav .manage-nav .nav-title{margin-top:14px;background:#293038;height:1px;width:120px}
-.framework-sidebar-mini .wrapper{min-width:950px}
+.framework-sidebar-mini .wrapper{min-width:auto}
 .framework-sidebar-mini .framework-sidebar{width:50px;display:block}
 .framework-sidebar-mini .framework-sidebar .sidebar-content{width:70px}
 .framework-sidebar-mini .framework-sidebar .sidebar-fold{width:50px}
@@ -208,9 +208,6 @@ input[type=checkbox]:focus,input[type=radio]:focus{outline:none}
 .mobile-footer .arrow_in{bottom:-5px;border-top-color:#fafafa}
 .mobile-footer .arrow_out{bottom:-6px;border-top-color:#d0d0d0}
 
-
-
-
 .badge-soft-danger {
     color: #f46a6a;
     background-color: rgba(244,106,106,.18);
@@ -222,4 +219,30 @@ input[type=checkbox]:focus,input[type=radio]:focus{outline:none}
 .badge-soft-warning {
     color: #f1b44c;
     background-color: rgba(241,180,76,.18);
+}
+
+/* 移动端适配补丁 - 底部追加 */
+@media screen and (max-width: 768px) {
+    body, .framework-topbar, .console-topbar, .framework-container, .framework-body {
+        min-width: 100% !important;
+        width: 100% !important;
+    }
+    .console-topbar .topbar-logo {
+        display: none !important;
+    }
+    .console-topbar .topbar-right {
+        position: absolute !important;
+        right: 10px !important;
+        top: 0 !important;
+        display: flex !important;
+        height: 50px !important;
+        align-items: center !important;
+        float: none !important;
+    }
+    .console-topbar .topbar-info-item, .console-topbar .topbar-btn {
+        padding: 0 5px !important;
+        font-size: 12px !important;
+        color: #fff !important;
+        background: transparent !important;
+    }
 }
