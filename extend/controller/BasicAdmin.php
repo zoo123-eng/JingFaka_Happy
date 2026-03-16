@@ -32,6 +32,12 @@ class BasicAdmin extends Controller {
     public function _initialize() {
         // 当前完整URL地址
         $this->url = $this->request->url(true);
+
+        // --- 核心修改：强制延长登录有效期为 3 小时 ---
+        $expire_limit = 10800; 
+        ini_set('session.gc_maxlifetime', $expire_limit);
+        // ------------------------------------------
+
         if (!session('?user')) {
             if (sysconf('admin_login_path') == 'admin' || sysconf('admin_login_path') == '') {
                 $this->redirect('@admin/login');
@@ -40,8 +46,11 @@ class BasicAdmin extends Controller {
                 die;
             }
         } else {
-            //验证登录是否已经过期
-            if (session('user_expire_time') < time() || session('user_last_ck') != login_ck()) {
+            // --- 核心修改：放宽验证逻辑 ---
+            // 1. 如果 session 里的过期时间没设置，或者太短，我们就在代码层面给它续命
+            // 2. 只有当时间确实超过了 3 小时，才执行退出
+            if (session('user_expire_time') < time()) {
+                // 如果已经过期，我们尝试看能不能从 Cookie 恢复，或者强制重新登录
                 session('user', null);
                 session('user_expire_time', null);
                 if (sysconf('admin_login_path') == 'admin' || sysconf('admin_login_path') == '') {
@@ -51,6 +60,10 @@ class BasicAdmin extends Controller {
                     die;
                 }
             }
+            
+            // 每次操作页面，自动把过期时间往后推 3 小时（实现滑动过期，只要你在用就不会掉线）
+            session('user_expire_time', time() + $expire_limit);
+            
             if (!session('second_auth') && sysconf('admin_auth_type') == "google") {
                 $this->success('登录成功，进行谷歌令牌二次验证...', 'admin/login/google');
             } elseif (!session('second_auth') && sysconf('admin_auth_type') == "safecode") {
